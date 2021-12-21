@@ -5,18 +5,27 @@
       <table class="table">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">Name</th>
-            <th scope="col">Clock In / CLock Out</th>
             <th scope="col">Time</th>
+            <th scope="col">Name</th>
+            <th scope="col">#</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="attandance in attendances" :key="attandance._id">
-            <th scope="row">1</th>
+            <td>{{ moment(attandance?.datetime).format("lll") }}</td>
             <td>{{ attandance?.user?.name }}</td>
-            <td>{{ attandance?.type }}</td>
-            <td>{{ moment(attandance?.datetime).format('lll') }}</td>
+            <td>
+              <span
+                v-if="attandance?.type === `CLOCK_IN`"
+                class="badge rounded-pill bg-success"
+                >clock in</span
+              >
+              <span
+                v-if="attandance?.type === `CLOCK_OUT`"
+                class="badge rounded-pill bg-warning"
+                >clock out</span
+              >
+            </td>
           </tr>
         </tbody>
       </table>
@@ -25,10 +34,11 @@
 </template>
 
 <script lang="ts">
+import { defineComponent } from "vue";
 import axios from "axios";
 import moment from "moment";
 
-export default {
+export default defineComponent({
   name: "App",
   data() {
     return {
@@ -44,8 +54,8 @@ export default {
   },
   methods: {
     moment: function (date: any) {
-    return moment(date);
-  }
-},
-} as any;
+      return moment(date);
+    },
+  },
+});
 </script>
