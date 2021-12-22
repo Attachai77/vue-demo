@@ -18,13 +18,11 @@
               <span
                 v-if="attandance?.type === `CLOCK_IN`"
                 class="badge rounded-pill bg-success"
-                >clock in</span
-              >
+              >clock in</span>
               <span
                 v-if="attandance?.type === `CLOCK_OUT`"
                 class="badge rounded-pill bg-warning"
-                >clock out</span
-              >
+              >clock out</span>
             </td>
           </tr>
         </tbody>
@@ -34,6 +32,7 @@
 </template>
 
 <script lang="ts">
+import liff from "@line/liff";
 import { defineComponent } from "vue";
 import axios from "axios";
 import moment from "moment";

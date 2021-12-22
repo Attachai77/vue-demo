@@ -73,8 +73,12 @@
 </template>
 
 <script lang="ts">
+// import store from "@/store";
+import liff from "@line/liff";
 import axios from "axios";
-import { defineComponent } from "vue";
+import { defineComponent, onMounted } from "vue";
+import { useStore } from "@/store";
+const store = useStore()
 
 export default defineComponent({
     name: "CreateLeaveRequest",
@@ -84,8 +88,26 @@ export default defineComponent({
             duration: "",
             dateFrom: "",
             dateTo: "",
-            note: "",
+            note: ""
         };
+    },
+    setup() {
+        onMounted(() => {
+            liff.init({
+                liffId: "1656744437-EGqm62Xl",
+            }).then(() => {
+                if (liff.isLoggedIn()) {
+                    const token = liff.getAccessToken()
+                    liff.getProfile()
+                        .then((profile) => {
+                            console.log({ ...profile, token });
+                            store.dispatch('setLine', { ...profile, token })
+                        })
+                } else {
+                    liff.login()
+                }
+            })
+        })
     },
     methods: {
         createLeave: async function () {
@@ -98,13 +120,27 @@ export default defineComponent({
             }
 
             try {
-                const resp = await axios.post('https://us-central1-hrm---bot-1.cloudfunctions.net/api/leave-request', payload)
-                console.log({ resp });
+                const resp = await axios.post(
+                    'https://us-central1-hrm---bot-1.cloudfunctions.net/api/leave-request',
+                    payload,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${store.getters.getLine.token}`
+                        }
+                    }
+                )
+
+                if (resp.data.success) {
+                    setTimeout(() => {
+                        liff.closeWindow()
+                    }, 1500);
+                }
+
+
             } catch (error) {
                 console.log({ error });
-
             }
         },
     },
-});
+}) as any;
 </script>
