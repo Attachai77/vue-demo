@@ -1,5 +1,11 @@
 import { createStore, Store } from "vuex";
 
+export enum IClientOS {
+  IOS = "ios",
+  ANDROID = "android",
+  WEB = "web",
+}
+
 export interface IRootState {
   line: {
     displayName: string;
@@ -8,6 +14,7 @@ export interface IRootState {
     userId: string;
     token: string;
   };
+  OS: IClientOS | string;
 }
 
 export const store = createStore({
@@ -19,10 +26,14 @@ export const store = createStore({
       userId: "",
       token: "",
     },
+    OS: "",
   },
   getters: {
     getLine(state) {
       return state.line;
+    },
+    getOS(state) {
+      return state.OS;
     },
   },
   mutations: {
@@ -32,10 +43,16 @@ export const store = createStore({
         ...data,
       };
     },
+    SET_OS(state, data) {
+      state.OS = data;
+    },
   },
   actions: {
     setLine({ commit }, data) {
       commit("SET_LINE", data);
+    },
+    setOS({ commit }, data) {
+      commit("SET_OS", data);
     },
   },
   modules: {},

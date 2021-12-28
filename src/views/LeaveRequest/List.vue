@@ -12,17 +12,19 @@
             <th scope="col">From</th>
             <th scope="col">To</th>
             <th scope="col">Approver</th>
+            <th scope="col">#</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">Pending</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>@mdo</td>
-            <td>-</td>
+          <tr v-for="leave in leaves" :key="leave._id">
+            <th scope="row">{{ leave?.status }}</th>
+            <td>{{ leave?.requesterId?.name }}</td>
+            <td>{{ leave.requestType }}</td>
+            <td>{{ leave.duration }}</td>
+            <td>{{ moment(leave.dateFrom) }}</td>
+            <td>{{ moment(leave.dateTo) }}</td>
+            <td>{{ leave?.approverId?.name }}</td>
+            <td><i class="bi-eye"></i></td>
           </tr>
         </tbody>
       </table>
@@ -31,9 +33,30 @@
 </template>
 
 <script lang="ts">
+import axios from "axios";
+import moment from "moment";
 import { defineComponent } from "vue";
 
 export default defineComponent({
   name: "LeaveRequest",
+  data() {
+    return {
+      leaves: [],
+    };
+  },
+  async mounted(): Promise<void> {
+    const resp = await axios.get(
+      "https://us-central1-hrm---bot-1.cloudfunctions.net/api/leave-request"
+    );
+    this.leaves = resp?.data?.data ?? [];
+  },
+  methods: {
+    moment: function (date: any) {
+      if (!date) {
+        return "-";
+      }
+      return moment(date).format("DD MMM YYYY");
+    },
+  },
 });
 </script>

@@ -1,6 +1,7 @@
 <template>
   <div class="attendance">
     <h4>Employee Attendance</h4>
+    <canvas id="canvas"></canvas>
     <div class="container">
       <table class="table">
         <thead>
@@ -18,11 +19,13 @@
               <span
                 v-if="attandance?.type === `CLOCK_IN`"
                 class="badge rounded-pill bg-success"
-              >clock in</span>
+                >clock in</span
+              >
               <span
                 v-if="attandance?.type === `CLOCK_OUT`"
                 class="badge rounded-pill bg-warning"
-              >clock out</span>
+                >clock out</span
+              >
             </td>
           </tr>
         </tbody>
@@ -32,17 +35,16 @@
 </template>
 
 <script lang="ts">
-import liff from "@line/liff";
 import { defineComponent } from "vue";
 import axios from "axios";
 import moment from "moment";
+import QRCode from "qrcode";
 
 export default defineComponent({
-  name: "App",
+  name: "Attendance",
   data() {
     return {
       attendances: [],
-      user: "xxxx",
     };
   },
   async mounted(): Promise<void> {
@@ -50,6 +52,17 @@ export default defineComponent({
       "https://us-central1-hrm---bot-1.cloudfunctions.net/api/attendances"
     );
     this.attendances = attandances?.data?.data;
+
+    const canvas = document.getElementById("canvas");
+
+    QRCode.toCanvas(
+      canvas,
+      "https://hrm---bot-1.web.app/user",
+      function (error: any) {
+        if (error) console.error(error);
+        console.log("success!");
+      }
+    );
   },
   methods: {
     moment: function (date: any) {

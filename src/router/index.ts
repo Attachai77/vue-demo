@@ -4,6 +4,8 @@ import User from "../views/User.vue";
 import Attendance from "../views/Attendance.vue";
 import LeaveRequest from "../views/LeaveRequest/List.vue";
 import CreateLeaveRequest from "../views/LeaveRequest/Create.vue";
+import ActivateStaffQRCode from "../views/Users/ActivateQRCode.vue";
+import Activate from "../views/Users/Activate.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -30,6 +32,16 @@ const routes: Array<RouteRecordRaw> = [
     path: "/create-leave-request",
     name: "CreateLeaveRequest",
     component: CreateLeaveRequest,
+  },
+  {
+    path: "/activate-staff-qr-code",
+    name: "ActivateStaffQRCode",
+    component: ActivateStaffQRCode,
+  },
+  {
+    path: "/activate/:userId",
+    name: "Activate",
+    component: Activate,
   },
 ];
 
