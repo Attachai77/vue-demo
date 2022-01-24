@@ -1,7 +1,6 @@
 <template>
   <div class="attendance">
-    <h4>Employee Attendance</h4>
-    <canvas id="canvas"></canvas>
+    <h4>Time Attendance</h4>
     <div class="container">
       <table class="table">
         <thead>
@@ -38,7 +37,6 @@
 import { defineComponent } from "vue";
 import axios from "axios";
 import moment from "moment";
-import QRCode from "qrcode";
 
 export default defineComponent({
   name: "Attendance",
@@ -47,22 +45,14 @@ export default defineComponent({
       attendances: [],
     };
   },
+  created() {
+    document.title = "Time Attendance";
+  },
   async mounted(): Promise<void> {
     const attandances = await axios.get(
       "https://us-central1-hrm---bot-1.cloudfunctions.net/api/attendances"
     );
     this.attendances = attandances?.data?.data;
-
-    const canvas = document.getElementById("canvas");
-
-    QRCode.toCanvas(
-      canvas,
-      "https://hrm---bot-1.web.app/user",
-      function (error: any) {
-        if (error) console.error(error);
-        console.log("success!");
-      }
-    );
   },
   methods: {
     moment: function (date: any) {

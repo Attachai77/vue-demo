@@ -4,6 +4,7 @@ import User from "../views/User.vue";
 import Attendance from "../views/Attendance.vue";
 import LeaveRequest from "../views/LeaveRequest/List.vue";
 import CreateLeaveRequest from "../views/LeaveRequest/Create.vue";
+import ViewLeaveRequest from "../views/LeaveRequest/View.vue";
 import ActivateStaffQRCode from "../views/Users/ActivateQRCode.vue";
 import Activate from "../views/Users/Activate.vue";
 
@@ -27,6 +28,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/leave-request",
     name: "LeaveRequest",
     component: LeaveRequest,
+  },
+  {
+    path: "/leave-request/:id",
+    name: "ViewLeaveRequest",
+    component: ViewLeaveRequest,
   },
   {
     path: "/create-leave-request",

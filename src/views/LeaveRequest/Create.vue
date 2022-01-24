@@ -117,6 +117,9 @@ export default defineComponent({
       note: "",
     };
   },
+  created() {
+    document.title = "Leave Request";
+  },
   setup() {
     onMounted(() => {
       liff

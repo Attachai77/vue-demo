@@ -16,6 +16,9 @@ export default defineComponent({
       result: "...",
     };
   },
+  created() {
+    document.title = "Scan QR";
+  },
   async mounted(): Promise<void> {
     await liff.init({ liffId: "1656744437-lr3yZB49" });
     if (!liff.isLoggedIn()) {

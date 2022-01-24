@@ -24,7 +24,11 @@
             <td>{{ moment(leave.dateFrom) }}</td>
             <td>{{ moment(leave.dateTo) }}</td>
             <td>{{ leave?.approverId?.name }}</td>
-            <td><i class="bi-eye"></i></td>
+            <td>
+              <a :href="'/leave-request/' + leave._id"
+                ><i class="bi-eye"></i
+              ></a>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -33,6 +37,7 @@
 </template>
 
 <script lang="ts">
+import liff from "@line/liff";
 import axios from "axios";
 import moment from "moment";
 import { defineComponent } from "vue";
@@ -44,7 +49,12 @@ export default defineComponent({
       leaves: [],
     };
   },
+  created() {
+    document.title = "Leave Request";
+  },
   async mounted(): Promise<void> {
+    await liff.init({ liffId: "1656744437-pk2YwlRQ" });
+
     const resp = await axios.get(
       "https://us-central1-hrm---bot-1.cloudfunctions.net/api/leave-request"
     );
